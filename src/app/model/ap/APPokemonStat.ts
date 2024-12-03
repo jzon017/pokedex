@@ -1,6 +1,12 @@
 export class APPokemonStat {
     constructor(
-        public readonly name: string,
-        public readonly baseStat: number
+        public readonly base_stat: number,
+        public readonly stat: APPokemonStatInfo
+    ) { }
+}
+
+export class APPokemonStatInfo {
+    constructor(
+        public readonly name: string
     ) { }
 }

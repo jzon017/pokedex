@@ -1,14 +1,21 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { map, Observable, of } from "rxjs";
+import { map, Observable } from "rxjs";
 
-import { APPokemon, APPokemonResourceList } from "../model";
+import { Apollo } from "apollo-angular";
+import {
+    APPokemon,
+    APPokemonResourceList,
+    IPokemon,
+    IPokemonResourceList,
+} from "../model";
+import { GET_POKEMON, GET_POKEMONS } from "./pokemon.query";
 
 @Injectable({ providedIn: "root" })
 export class PokemonApiService {
-    private pokemonCache: Map<string, APPokemon> = new Map<string, APPokemon>([]);
 
-    constructor(private readonly httpClient: HttpClient) {}
+    constructor(
+        private apollo: Apollo
+    ) { }
 
     public getPokemons(
         perPage: number = 25,
@@ -16,28 +23,44 @@ export class PokemonApiService {
     ): Observable<APPokemonResourceList> {
         const offset = perPage * (page - 1);
 
-        return this.httpClient.get<APPokemonResourceList>(
-            "https://pokeapi.co/api/v2/pokemon",
-            {
-                params: {
-                    limit: perPage,
-                    offset: offset,
-                },
-            }
-        );
+        return this.apollo
+            .watchQuery<{ pokemons: IPokemonResourceList }>({
+                query: GET_POKEMONS,
+                variables: { limit: perPage, offset: offset },
+            })
+            .valueChanges.pipe(
+                map((result) => {
+                    const data = result.data;
+
+                    return new APPokemonResourceList(
+                        data.pokemons.count,
+                        data.pokemons.next,
+                        data.pokemons.previous,
+                        data.pokemons.results
+                    );
+                })
+            );
     }
 
-    public getPokemon(id: string): Observable<APPokemon> {
-        if (this.pokemonCache.has(id)) {
-            return of(this.pokemonCache.get(id) as APPokemon);
-        }
+    public getPokemon(name: string, image: string): Observable<APPokemon> {
+        return this.apollo
+            .watchQuery<{ pokemon: IPokemon }>({
+                query: GET_POKEMON,
+                variables: { name },
+            })
+            .valueChanges.pipe(
+                map((result) => {
+                    const data = result.data;
 
-        return this.httpClient
-            .get<APPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`)
-            .pipe(
-                map((pokemon: APPokemon) => {
-                    this.pokemonCache.set(pokemon.name, pokemon);
-                    return pokemon;
+                    return new APPokemon(
+                        data.pokemon.id,
+                        data.pokemon.name,
+                        data.pokemon.types,
+                        image,
+                        data.pokemon.height,
+                        data.pokemon.weight,
+                        data.pokemon.stats
+                    );
                 })
             );
     }
