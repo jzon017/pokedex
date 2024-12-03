@@ -1,8 +1,11 @@
-<p-card [header]="pokemonName(detail.name)" [subheader]="pokemonId(detail.id)">
+<p-card [header]="detail.name | uppercase" [subheader]="detail.id | pokedexNumber">
     <ng-template pTemplate="header">
-        <img [alt]="detail.name" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png" />
+        <img [alt]="detail.name" [src]="detail.sprite" />
     </ng-template>
-    <p>
-        Lorem ipsum...
-    </p>
+
+    <div class="pokemon-types">
+        @for (type of detail.types; track type) {
+            <pokemon-type-component [typeInfo]="type"></pokemon-type-component>
+        }
+    </div>
 </p-card>
