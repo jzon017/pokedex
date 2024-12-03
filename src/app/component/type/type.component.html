@@ -1,0 +1,8 @@
+<div
+    class="pokemon-type"
+    [ngClass]="typeInfo.type.name"
+    [pTooltip]="typeInfo.type.name | uppercase"
+    tooltipPosition="top"
+>
+    <img [src]="iconPath" [alt]="typeInfo.type.name" />
+</div>

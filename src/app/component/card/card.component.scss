@@ -1,0 +1,25 @@
+::ng-deep {
+    p-card {
+        text-align: center;
+    }
+
+    .p-card-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+
+        img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+    }
+}
+
+.pokemon-types {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}

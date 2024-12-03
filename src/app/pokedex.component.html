@@ -1,0 +1,7 @@
+<div class="pokemon-grid">
+    @for (pokemon of pokemons(); track pokemon) {
+        <pokemon-card-component [detail]="pokemon"></pokemon-card-component>
+    }
+</div>
+
+<router-outlet />
