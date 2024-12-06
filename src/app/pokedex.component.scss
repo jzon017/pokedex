@@ -1,25 +1,47 @@
-.pokemon-grid {
+:host {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: center;
-    padding: 1rem;
-    margin: 2rem;
-}
 
-pokemon-card-component {
-    flex: 0 1 calc(25% - 1.5rem);
-    box-sizing: border-box;
-}
-
-@media (max-width: 1024px) {
-    pokemon-card-component {
-        flex: 0 1 calc(50% - 1.5rem);
+    .pokemon-list {
+        display: flex;
     }
-}
 
-@media (max-width: 600px) {
-    pokemon-card-component {
-        flex: 0 1 calc(100% - 1.5rem);
+    .pokemon-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+        padding: 1rem;
+        margin: 2rem;
+
+        pokemon-card-component {
+            cursor: pointer;
+            min-width: 300px;
+            flex: 0 1 calc(25% - 1.5rem);
+            box-sizing: border-box;
+        }
+    
+        @media (max-width: 1024px) {
+            pokemon-card-component {
+                flex: 0 1 calc(50% - 1.5rem);
+            }
+        }
+    
+        @media (max-width: 600px) {
+            pokemon-card-component {
+                flex: 0 1 calc(100% - 1.5rem);
+            }
+        }
     }
+
+    .pokemon-selected {
+        min-width: 300px;
+        height: 100vh;
+    }
+
+    ::ng-deep {
+        .p-scrollpanel {
+            width: 100%;
+            height: 100vh;
+        }
+    } 
 }

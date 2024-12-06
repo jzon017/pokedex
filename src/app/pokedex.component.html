@@ -1,6 +1,16 @@
-<div class="pokemon-grid">
-    @for (pokemon of pokemons(); track pokemon) {
-        <pokemon-card-component [detail]="pokemon"></pokemon-card-component>
+<div class="pokemon-list">
+    <p-scrollPanel>
+        <div class="pokemon-grid">
+            @for (pokemon of pokemons(); track pokemon) {
+            <pokemon-card-component [detail]="pokemon" />
+            }
+        </div>
+    </p-scrollPanel>
+</div>
+
+<div class="pokemon-selected">
+    @if (!loading() && pokemons().length > 0) {
+    <pokemon-card-component [detail]="selectedPokemon()" [isDetailed]="true" />
     }
 </div>
 
